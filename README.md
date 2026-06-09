@@ -29,7 +29,10 @@ Replace `consume` with any skill name in [`skills/`](./skills/). Symlinking (vs 
 
 | Skill | What it does |
 |---|---|
-| [`consume`](./skills/consume/SKILL.md) | Weekly 15-minute Friday triage of everything you saved during the week. Tweets, articles, repos, AI tools  -  routed to read / save / share / trial. |
+| [`codex-review`](./skills/codex-review/SKILL.md) | Cross-model code review using OpenAI Codex CLI. Three modes (review, challenge, consult). Catches blind spots Claude shares with itself. |
+| [`consume`](./skills/consume/SKILL.md) | Weekly 15-minute Friday triage of everything you saved during the week. Tweets, articles, repos, AI tools, routed to read / save / share / trial. |
+| [`interview-me`](./skills/interview-me/SKILL.md) | Adaptive interviewer that uses AskUserQuestion to clarify what you actually want to build. Runs until 95% confident, then hands off. |
+| [`outcome-loop`](./skills/outcome-loop/SKILL.md) | Grade-and-revise loop. Runs a command, grades the result, diagnoses failures, fixes, and re-runs until it passes or you're stuck. Prevents sycophancy. |
 
 More each week as we sanitise and ship them.
 
