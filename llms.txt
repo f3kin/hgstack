@@ -1,8 +1,8 @@
 # hgstack
 
-A public, curated subset of the Claude Code stack used by Hourglass (an AI-native services company in Melbourne) to run internal automations and ship client AI projects.
+A public, curated subset of the AI coding stack used by Hourglass (an AI-native services company in Melbourne) to run internal automations and ship client AI projects.
 
-This repository contains Claude Code skills, hooks, rules, and statuslines as plain markdown / shell files. There is no runtime, framework, or package to install. Each skill is self-contained in its own directory and includes its own setup notes.
+This repository contains agent skills, hooks, rules, and statuslines as plain markdown / shell files. There is no runtime, framework, or package to install. Each skill is self-contained in its own directory and includes its own setup notes. Currently optimised for Claude Code; the file format is portable to any agent that reads files (Codex, Aider, Cursor, OpenCode, etc.).
 
 ## Where to start
 

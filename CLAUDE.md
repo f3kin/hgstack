@@ -4,7 +4,7 @@ Context for Claude Code (and other coding agents) working in this repository.
 
 ## What this repo is
 
-A public, curated subset of the Claude Code stack used by [Hourglass](https://thehourglass.ai) to run internal automations and ship client AI projects. Plain markdown / shell files. No runtime, no framework, no package.
+A public, curated subset of the AI coding stack used by [Hourglass](https://thehourglass.ai) to run internal automations and ship client AI projects. Plain markdown / shell files. No runtime, no framework, no package. Currently optimised for Claude Code; the file format (markdown + YAML frontmatter) is portable to any agent that reads files.
 
 The internal stack lives in a private repo (`hourglass-claude-stack`) under the Hourglass GitHub org. This public version is curated, sanitised, and generalised for anyone to fork.
 

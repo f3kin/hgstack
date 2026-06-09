@@ -1,10 +1,10 @@
 # hgstack
 
-The Claude Code stack we use to run an AI-native company.
+The AI coding stack we use to run an AI-native company.
 
-Built by Hourglass to ship our own internal automations and client AI projects on Claude Code. 18 months of daily use. ~50 skills, hooks, and rules in the internal stack; this is the curated, sanitised subset we've open-sourced.
+Built by Hourglass to ship our own internal automations and client AI projects. 18 months of daily AI-coding use. ~50 skills, hooks, and rules in the internal stack; this is the curated, sanitised subset we've open-sourced.
 
-Skills install as files. No runtime, no framework, no package to install. Drop them into your own Claude Code setup, fork them, adapt them.
+Skills install as files. No runtime, no framework, no package. Drop them into your own AI agent's config, fork them, adapt them. Currently optimised for [Claude Code](https://claude.ai/code); the skill format (markdown + YAML frontmatter) is portable to any agent that reads files (Codex, Aider, Cursor, OpenCode, etc.).
 
 > **For agents / LLMs reading this:** start with [`llms.txt`](./llms.txt), [`AGENTS.md`](./AGENTS.md), or [`CLAUDE.md`](./CLAUDE.md). Pick one  -  they all point at the same things.
 
@@ -52,10 +52,10 @@ Each skill has its own setup notes (env vars, integrations, optional dependencie
 
 ## What's inside
 
-- [`skills/`](./skills/), self-contained Claude Code skills. Names without a prefix are general-purpose; `hg-` prefix marks an Hourglass team practice with opinionated conventions worth sharing.
-- [`hooks/`](./hooks/), shell hooks Claude Code runs at key lifecycle points (writes, tool use, session start).
+- [`skills/`](./skills/), self-contained agent skills. Names without a prefix are general-purpose; `hg-` prefix marks an Hourglass team practice with opinionated conventions worth sharing.
+- [`hooks/`](./hooks/), shell hooks the agent runs at key lifecycle points (writes, tool use, session start).
 - [`rules/`](./rules/), markdown convention files. Load them as `@-imports` from your own `CLAUDE.md` so the principles apply across every session.
-- [`statuslines/`](./statuslines/), Claude Code statusline scripts.
+- [`statuslines/`](./statuslines/), agent statusline scripts (currently Claude Code format).
 - [`.githooks/`](./.githooks/), git hooks (pre-commit audit gate).
 - `docs/`, coming, with the thinking and ethos behind the stack.
 
@@ -97,7 +97,7 @@ More each week as we sanitise and ship them.
 
 A few principles run through the stack:
 
-- **Thin harness, fat skills.** Claude Code is the harness; your skills are where the value lives. Don't fight the harness, build deeply on it.
+- **Thin harness, fat skills.** Your agent is the harness; your skills are where the value lives. Don't fight the harness, build deeply on it.
 - **Skills are files, not frameworks.** A useful skill is usually a single `SKILL.md` of 50–200 lines. If it's bigger, it's probably two skills.
 - **Generalise before you share.** No personal paths, no hardcoded infra, no secrets. We use audit scripts to enforce this; see [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md) once it lands.
 - **Build for your champion, not for everyone.** Your most useful skills are the ones for your specific workflow. Adapt ours; don't adopt them whole.
