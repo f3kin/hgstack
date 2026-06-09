@@ -18,13 +18,31 @@ cd ~/repos/hg-stack
 ./install.sh
 ```
 
-The installer symlinks every skill, hook, and rule into your `~/.claude/` directory. Idempotent and safe to re-run; existing files are backed up before being overwritten, never destroyed. Restart Claude Code afterwards.
+The installer symlinks every skill, hook, and rule into your `~/.claude/` directory. **Conflict-aware:** if you already have a skill or rule with the same name and different content, the installer leaves yours alone and logs it as a conflict at the end. Nothing of yours is ever silently overwritten.
 
-If you only want a subset: `./install.sh skills` (or `hooks`, `rules`, or any combination).
+Restart Claude Code afterwards to pick up the new skills.
 
-To update later: `cd ~/repos/hg-stack && ./install.sh --update`. Pulls latest from origin and re-syncs.
+### Modes
 
-Prefer to cherry-pick by hand?
+```bash
+./install.sh --dry-run       # show what would happen, change nothing
+./install.sh --reconcile     # scan ~/.claude/ and report overlaps; no changes
+./install.sh --interactive   # prompt per conflict (keep / replace / show diff)
+./install.sh --force         # back up and overwrite all conflicts (CI use)
+./install.sh --update        # git pull --rebase, then install
+./install.sh --rollback      # restore from the most recent backup
+./install.sh skills hooks    # only install named categories
+```
+
+**Recommended first run:** `./install.sh --reconcile`. It tells you exactly what's `new`, `current`, `update`, or `conflict` for your setup, and lists everything in your `~/.claude/` that isn't in this repo as `personal` (untouched). No surprises.
+
+### Backups
+
+Any file the installer replaces is first backed up to `~/.claude/backups/hg-stack-<timestamp>/`, preserving the directory structure. Symlinks are recorded as `.info` text files so we can restore the original target. `./install.sh --rollback` reverses the most recent install in one command.
+
+### Cherry-picking
+
+If you'd rather pick by hand:
 
 ```bash
 ln -s ~/repos/hg-stack/skills/consume ~/.claude/skills/consume
@@ -38,7 +56,7 @@ Each skill has its own setup notes (env vars, integrations, optional dependencie
 - [`hooks/`](./hooks/), shell hooks Claude Code runs at key lifecycle points (writes, tool use, session start).
 - [`rules/`](./rules/), markdown convention files. Load them as `@-imports` from your own `CLAUDE.md` so the principles apply across every session.
 - [`statuslines/`](./statuslines/), Claude Code statusline scripts.
-- [`scripts/`](./scripts/), repo-management tooling. Includes the audit scripts (`check-generalisable.sh`, `check-shareable.sh`) that gate every commit.
+- [`.githooks/`](./.githooks/), git hooks (pre-commit audit gate).
 - `docs/`, coming, with the thinking and ethos behind the stack.
 
 ## Skills available now
@@ -53,24 +71,25 @@ Each skill has its own setup notes (env vars, integrations, optional dependencie
 
 ## Contributing / safety
 
-Every commit is gated by three checks before it lands (a `.githooks/pre-commit` hook enables them in your local clone):
-
-1. YAML frontmatter parses on every modified `SKILL.md`.
-2. [`scripts/check-generalisable.sh`](./scripts/check-generalisable.sh) blocks any hardcoded personal usernames, paths, or emails.
-3. [`scripts/check-shareable.sh`](./scripts/check-shareable.sh) blocks API keys, tokens, private keys, internal URLs, and 1Password vault references.
-
-To enable in your clone (once):
+Every maintainer commit is gated by three checks before it lands. A `.githooks/pre-commit` hook runs them automatically if you've enabled it in your local clone:
 
 ```bash
 git config core.hooksPath .githooks
 ```
 
-You can also run the audits manually any time:
+The three gates:
+
+1. YAML frontmatter parses on every modified `SKILL.md`.
+2. `check-generalisable.sh` blocks any hardcoded personal usernames, paths, or emails.
+3. `check-shareable.sh` blocks API keys, tokens, private keys, internal URLs, and 1Password vault references.
+
+The audit scripts themselves live alongside this repo (not inside it) so they can be reused across other public-stack repos without duplication. If you're forking and want the same protection, copy them in:
 
 ```bash
-./scripts/check-generalisable.sh .
-./scripts/check-shareable.sh .
+mkdir -p ../scripts && cp <path-to>/check-*.sh ../scripts/
 ```
+
+The hook auto-detects either `../scripts/` (sibling to the repo) or `scripts/` (inside the repo), and skips gates 2 and 3 with a warning if neither is present.
 
 More each week as we sanitise and ship them.
 

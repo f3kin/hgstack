@@ -14,7 +14,16 @@
 set -euo pipefail
 
 REPO_DIR="$(git rev-parse --show-toplevel)"
-SCRIPTS_DIR="$REPO_DIR/scripts"
+
+# Audit scripts live in the build-wrapper one level up (Finlay's setup).
+# Fall back to a sibling "scripts/" inside the repo if a contributor has copied them in.
+if [ -d "$REPO_DIR/../scripts" ]; then
+  SCRIPTS_DIR="$REPO_DIR/../scripts"
+elif [ -d "$REPO_DIR/scripts" ]; then
+  SCRIPTS_DIR="$REPO_DIR/scripts"
+else
+  SCRIPTS_DIR=""
+fi
 
 red() { printf '\033[31m%s\033[0m\n' "$1"; }
 green() { printf '\033[32m%s\033[0m\n' "$1"; }
@@ -38,7 +47,7 @@ else
 fi
 
 # Gate 2: check-generalisable.sh on whole repo
-if [ -x "$SCRIPTS_DIR/check-generalisable.sh" ]; then
+if [ -n "$SCRIPTS_DIR" ] && [ -x "$SCRIPTS_DIR/check-generalisable.sh" ]; then
   if ! "$SCRIPTS_DIR/check-generalisable.sh" "$REPO_DIR" >/dev/null 2>&1; then
     red "[2/3] check-generalisable: FAIL"
     "$SCRIPTS_DIR/check-generalisable.sh" "$REPO_DIR" | tail -20
@@ -51,7 +60,7 @@ else
 fi
 
 # Gate 3: check-shareable.sh on whole repo
-if [ -x "$SCRIPTS_DIR/check-shareable.sh" ]; then
+if [ -n "$SCRIPTS_DIR" ] && [ -x "$SCRIPTS_DIR/check-shareable.sh" ]; then
   if ! "$SCRIPTS_DIR/check-shareable.sh" "$REPO_DIR" >/dev/null 2>&1; then
     red "[3/3] check-shareable: FAIL"
     "$SCRIPTS_DIR/check-shareable.sh" "$REPO_DIR" | tail -20
