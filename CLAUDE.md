@@ -1,4 +1,4 @@
-# CLAUDE.md  -  hg-stack
+# CLAUDE.md  -  hgstack
 
 Context for Claude Code (and other coding agents) working in this repository.
 

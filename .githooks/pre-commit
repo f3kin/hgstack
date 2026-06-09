@@ -1,5 +1,5 @@
 #!/bin/bash
-# Pre-commit gate for hg-stack.
+# Pre-commit gate for hgstack.
 # Runs three checks. Any failure blocks the commit.
 #   1. YAML frontmatter parse on every SKILL.md
 #   2. check-generalisable.sh: no personal paths or emails

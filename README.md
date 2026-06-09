@@ -1,4 +1,4 @@
-# hg-stack
+# hgstack
 
 The Claude Code stack we use to run an AI-native company.
 
@@ -13,8 +13,8 @@ Skills install as files. No runtime, no framework, no package to install. Drop t
 Clone the repo and run the installer:
 
 ```bash
-git clone https://github.com/f3kin/hg-stack.git ~/repos/hg-stack
-cd ~/repos/hg-stack
+git clone https://github.com/f3kin/hgstack.git ~/repos/hgstack
+cd ~/repos/hgstack
 ./install.sh
 ```
 
@@ -38,14 +38,14 @@ Restart Claude Code afterwards to pick up the new skills.
 
 ### Backups
 
-Any file the installer replaces is first backed up to `~/.claude/backups/hg-stack-<timestamp>/`, preserving the directory structure. Symlinks are recorded as `.info` text files so we can restore the original target. `./install.sh --rollback` reverses the most recent install in one command.
+Any file the installer replaces is first backed up to `~/.claude/backups/hgstack-<timestamp>/`, preserving the directory structure. Symlinks are recorded as `.info` text files so we can restore the original target. `./install.sh --rollback` reverses the most recent install in one command.
 
 ### Cherry-picking
 
 If you'd rather pick by hand:
 
 ```bash
-ln -s ~/repos/hg-stack/skills/consume ~/.claude/skills/consume
+ln -s ~/repos/hgstack/skills/consume ~/.claude/skills/consume
 ```
 
 Each skill has its own setup notes (env vars, integrations, optional dependencies) in its `SKILL.md`.

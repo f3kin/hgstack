@@ -1,4 +1,4 @@
-# hg-stack
+# hgstack
 
 A public, curated subset of the Claude Code stack used by Hourglass (an AI-native services company in Melbourne) to run internal automations and ship client AI projects.
 
@@ -18,8 +18,8 @@ This repository contains Claude Code skills, hooks, rules, and statuslines as pl
 ## Install
 
 ```bash
-git clone https://github.com/f3kin/hg-stack.git ~/repos/hg-stack
-ln -s ~/repos/hg-stack/skills/<name> ~/.claude/skills/<name>
+git clone https://github.com/f3kin/hgstack.git ~/repos/hgstack
+ln -s ~/repos/hgstack/skills/<name> ~/.claude/skills/<name>
 ```
 
 Symlink rather than copy, so `git pull` updates your installed skills.

@@ -1,5 +1,5 @@
 #!/bin/bash
-# hg-stack installer.
+# hgstack installer.
 # Symlinks skills, hooks, rules, and statuslines from this repo into ~/.claude/.
 # Conflict-aware: never overwrites a real file that differs from ours without
 # your explicit confirmation. Safe to re-run.
@@ -99,7 +99,7 @@ classify() {
 
 ensure_backup_dir() {
   if [ -z "$BACKUP_DIR" ]; then
-    BACKUP_DIR="$BACKUP_ROOT/hg-stack-$(date +%Y%m%d-%H%M%S)"
+    BACKUP_DIR="$BACKUP_ROOT/hgstack-$(date +%Y%m%d-%H%M%S)"
     if [ "$DRY_RUN" = false ]; then
       mkdir -p "$BACKUP_DIR"
     fi
@@ -218,9 +218,9 @@ if [ "$ROLLBACK" = true ]; then
     red "No backups found at $BACKUP_ROOT."
     exit 1
   fi
-  LATEST_BACKUP="$(ls -1dt "$BACKUP_ROOT"/hg-stack-* 2>/dev/null | head -1 || true)"
+  LATEST_BACKUP="$(ls -1dt "$BACKUP_ROOT"/hgstack-* 2>/dev/null | head -1 || true)"
   if [ -z "$LATEST_BACKUP" ]; then
-    red "No hg-stack backups found in $BACKUP_ROOT."
+    red "No hgstack backups found in $BACKUP_ROOT."
     exit 1
   fi
   bold "Rolling back from: $LATEST_BACKUP"
