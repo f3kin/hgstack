@@ -10,20 +10,35 @@ Skills install as files. No runtime, no framework, no package to install. Drop t
 
 ## Install
 
-Clone the repo and symlink the skills you want into your own Claude Code skills directory:
+Clone the repo and run the installer:
 
 ```bash
 git clone https://github.com/f3kin/hg-stack.git ~/repos/hg-stack
+cd ~/repos/hg-stack
+./install.sh
+```
+
+The installer symlinks every skill, hook, and rule into your `~/.claude/` directory. Idempotent and safe to re-run; existing files are backed up before being overwritten, never destroyed. Restart Claude Code afterwards.
+
+If you only want a subset: `./install.sh skills` (or `hooks`, `rules`, or any combination).
+
+To update later: `cd ~/repos/hg-stack && ./install.sh --update`. Pulls latest from origin and re-syncs.
+
+Prefer to cherry-pick by hand?
+
+```bash
 ln -s ~/repos/hg-stack/skills/consume ~/.claude/skills/consume
 ```
 
-Replace `consume` with any skill name in [`skills/`](./skills/). Symlinking (vs copying) means you can `git pull` to get updates without re-copying. Each skill includes its own setup notes  -  env vars, integrations, optional dependencies  -  in its `SKILL.md`.
+Each skill has its own setup notes (env vars, integrations, optional dependencies) in its `SKILL.md`.
 
 ## What's inside
 
-- [`skills/`](./skills/)  -  Claude Code skills. Self-contained, each one usable on its own. Names without a prefix are general-purpose; `hg-` prefix means it's an Hourglass team practice we found valuable enough to share.
-- `hooks/`, `rules/`, `statuslines/`  -  coming as we generalise them from the internal stack.
-- [`docs/`](./docs/)  -  the thinking. Why we work this way, what we've learned across 18 months of building.
+- [`skills/`](./skills/), self-contained Claude Code skills. Names without a prefix are general-purpose; `hg-` prefix marks an Hourglass team practice with opinionated conventions worth sharing.
+- [`hooks/`](./hooks/), shell hooks Claude Code runs at key lifecycle points (writes, tool use, session start).
+- [`rules/`](./rules/), markdown convention files. Load them as `@-imports` from your own `CLAUDE.md` so the principles apply across every session.
+- `statuslines/`, coming.
+- `docs/`, coming, with the thinking and ethos behind the stack.
 
 ## Skills available now
 
