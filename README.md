@@ -1,0 +1,55 @@
+# hg-stack
+
+The Claude Code stack we use to run an AI-native company.
+
+Built by Hourglass to ship our own internal automations and client AI projects on Claude Code. 18 months of daily use. ~50 skills, hooks, and rules in the internal stack; this is the curated, sanitised subset we've open-sourced.
+
+Skills install as files. No runtime, no framework, no package to install. Drop them into your own Claude Code setup, fork them, adapt them.
+
+> **For agents / LLMs reading this:** start with [`llms.txt`](./llms.txt), [`AGENTS.md`](./AGENTS.md), or [`CLAUDE.md`](./CLAUDE.md). Pick one  -  they all point at the same things.
+
+## Install
+
+Clone the repo and symlink the skills you want into your own Claude Code skills directory:
+
+```bash
+git clone https://github.com/f3kin/hg-stack.git ~/repos/hg-stack
+ln -s ~/repos/hg-stack/skills/consume ~/.claude/skills/consume
+```
+
+Replace `consume` with any skill name in [`skills/`](./skills/). Symlinking (vs copying) means you can `git pull` to get updates without re-copying. Each skill includes its own setup notes  -  env vars, integrations, optional dependencies  -  in its `SKILL.md`.
+
+## What's inside
+
+- [`skills/`](./skills/)  -  Claude Code skills. Self-contained, each one usable on its own. Names without a prefix are general-purpose; `hg-` prefix means it's an Hourglass team practice we found valuable enough to share.
+- `hooks/`, `rules/`, `statuslines/`  -  coming as we generalise them from the internal stack.
+- [`docs/`](./docs/)  -  the thinking. Why we work this way, what we've learned across 18 months of building.
+
+## Skills available now
+
+| Skill | What it does |
+|---|---|
+| [`consume`](./skills/consume/SKILL.md) | Weekly 15-minute Friday triage of everything you saved during the week. Tweets, articles, repos, AI tools  -  routed to read / save / share / trial. |
+
+More each week as we sanitise and ship them.
+
+## The thinking
+
+A few principles run through the stack:
+
+- **Thin harness, fat skills.** Claude Code is the harness; your skills are where the value lives. Don't fight the harness, build deeply on it.
+- **Skills are files, not frameworks.** A useful skill is usually a single `SKILL.md` of 50–200 lines. If it's bigger, it's probably two skills.
+- **Generalise before you share.** No personal paths, no hardcoded infra, no secrets. We use audit scripts to enforce this; see [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md) once it lands.
+- **Build for your champion, not for everyone.** Your most useful skills are the ones for your specific workflow. Adapt ours; don't adopt them whole.
+
+More in [`docs/ETHOS.md`](./docs/ETHOS.md) (coming).
+
+## License
+
+MIT. Use it, fork it, adapt it. Attribution appreciated, not required.
+
+## Made by
+
+[Hourglass](https://thehourglass.ai), an AI-native services company in Melbourne. Run by [Finlay Ekins](https://finlayekins.com).
+
+Weekly notes on AI and what we're building: [newsletter.finlayekins.com](https://newsletter.finlayekins.com).

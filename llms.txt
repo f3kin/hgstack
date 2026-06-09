@@ -1,0 +1,29 @@
+# hg-stack
+
+A public, curated subset of the Claude Code stack used by Hourglass (an AI-native services company in Melbourne) to run internal automations and ship client AI projects.
+
+This repository contains Claude Code skills, hooks, rules, and statuslines as plain markdown / shell files. There is no runtime, framework, or package to install. Each skill is self-contained in its own directory and includes its own setup notes.
+
+## Where to start
+
+- `README.md`  -  human entry point, install instructions, what's inside.
+- `skills/`  -  individual skills, each with a `SKILL.md`. Names without a prefix are general-purpose; the `hg-` prefix marks Hourglass team practices.
+- `docs/`  -  ethos and principles (coming as we ship them).
+
+## Naming conventions
+
+- `hg-*`  -  Hourglass team-tested skill / hook / practice. Curated from our internal stack.
+- (unprefixed)  -  general-purpose skill. Useful regardless of team.
+
+## Install
+
+```bash
+git clone https://github.com/f3kin/hg-stack.git ~/repos/hg-stack
+ln -s ~/repos/hg-stack/skills/<name> ~/.claude/skills/<name>
+```
+
+Symlink rather than copy, so `git pull` updates your installed skills.
+
+## License
+
+MIT.
