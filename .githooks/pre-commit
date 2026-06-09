@@ -1,0 +1,75 @@
+#!/bin/bash
+# Pre-commit gate for hg-stack.
+# Runs three checks. Any failure blocks the commit.
+#   1. YAML frontmatter parse on every SKILL.md
+#   2. check-generalisable.sh: no personal paths or emails
+#   3. check-shareable.sh: no secrets, API keys, tokens
+#
+# To enable in your local clone (once per checkout):
+#   git config core.hooksPath .githooks
+#
+# To bypass for a single emergency commit:
+#   git commit --no-verify ... (you'll explain why in the message)
+
+set -euo pipefail
+
+REPO_DIR="$(git rev-parse --show-toplevel)"
+SCRIPTS_DIR="$REPO_DIR/scripts"
+
+red() { printf '\033[31m%s\033[0m\n' "$1"; }
+green() { printf '\033[32m%s\033[0m\n' "$1"; }
+yellow() { printf '\033[33m%s\033[0m\n' "$1"; }
+
+FAILED=0
+
+# Gate 1: YAML frontmatter on staged SKILL.md files
+STAGED_SKILLS=$(git diff --cached --name-only --diff-filter=ACM | grep -E 'skills/.+/SKILL\.md$' || true)
+if [ -n "$STAGED_SKILLS" ]; then
+  for f in $STAGED_SKILLS; do
+    if ! python3 -c "import sys, yaml; src=open('$REPO_DIR/$f').read(); fm=src.split('---',2)[1]; yaml.safe_load(fm)" 2>/dev/null; then
+      red "YAML frontmatter parse failed: $f"
+      red "  Run: python3 -c \"import yaml; yaml.safe_load(open('$f').read().split('---',2)[1])\" to see the error."
+      FAILED=1
+    fi
+  done
+  [ $FAILED -eq 0 ] && green "[1/3] YAML parse: OK ($(echo "$STAGED_SKILLS" | wc -l | tr -d ' ') skill file(s) checked)"
+else
+  green "[1/3] YAML parse: no SKILL.md changes staged"
+fi
+
+# Gate 2: check-generalisable.sh on whole repo
+if [ -x "$SCRIPTS_DIR/check-generalisable.sh" ]; then
+  if ! "$SCRIPTS_DIR/check-generalisable.sh" "$REPO_DIR" >/dev/null 2>&1; then
+    red "[2/3] check-generalisable: FAIL"
+    "$SCRIPTS_DIR/check-generalisable.sh" "$REPO_DIR" | tail -20
+    FAILED=1
+  else
+    green "[2/3] check-generalisable: PASS"
+  fi
+else
+  yellow "[2/3] check-generalisable.sh not found at $SCRIPTS_DIR/, skipping"
+fi
+
+# Gate 3: check-shareable.sh on whole repo
+if [ -x "$SCRIPTS_DIR/check-shareable.sh" ]; then
+  if ! "$SCRIPTS_DIR/check-shareable.sh" "$REPO_DIR" >/dev/null 2>&1; then
+    red "[3/3] check-shareable: FAIL"
+    "$SCRIPTS_DIR/check-shareable.sh" "$REPO_DIR" | tail -20
+    FAILED=1
+  else
+    green "[3/3] check-shareable: clean"
+  fi
+else
+  yellow "[3/3] check-shareable.sh not found at $SCRIPTS_DIR/, skipping"
+fi
+
+if [ $FAILED -ne 0 ]; then
+  red ""
+  red "Pre-commit gates failed. Commit blocked."
+  red "Fix the findings above, then re-stage and commit."
+  red "(Emergency: --no-verify, but explain why in the message.)"
+  exit 1
+fi
+
+green ""
+green "All gates green. Commit proceeding."
