@@ -112,4 +112,4 @@ MIT. Use it, fork it, adapt it. Attribution appreciated, not required.
 
 [Hourglass](https://thehourglass.ai), an AI-native services company in Melbourne. Run by [Finlay Ekins](https://finlayekins.com).
 
-Weekly notes on AI and what we're building: [newsletter.finlayekins.com](https://newsletter.finlayekins.com).
+Weekly notes on AI and what we're building: [finlayekins.com/writing](https://finlayekins.com/writing).
